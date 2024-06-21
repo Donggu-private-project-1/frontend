@@ -1,28 +1,16 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Build') {
+        stage('Build Image') {
             steps {
-                echo 'Building...'
-                // 여기에 빌드 스크립트나 명령어를 추가할 수 있습니다.
-                // 예: sh 'make'
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-                // 여기에 테스트 스크립트나 명령어를 추가할 수 있습니다.
-                // 예: sh 'make test'
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
-                // 여기에 배포 스크립트나 명령어를 추가할 수 있습니다.
-                // 예: sh 'make deploy'
+                script {
+                    // Docker 빌드 및 태그
+                    docker.withRegistry('http://192.168.20.110:8081', 'harbbor_robot') {
+                        def customImage = docker.build("192.168.20.110:8081/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
+                        customImage.push()
+                    }
+                }
             }
         }
     }
