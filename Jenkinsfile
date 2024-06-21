@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Docker 빌드 및 태그
-                    docker.withRegistry('http://192.168.20.110:8081', 'harbor_robot') {
+                    docker.withRegistry('http://192.168.20.110:8081', 'robot$robotdonggu') {
                         def customImage = docker.build("192.168.20.110:8081/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
                         customImage.push()
                     }
