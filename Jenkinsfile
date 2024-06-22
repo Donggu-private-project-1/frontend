@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-    stages {
+
         stage('Build Image for test') {
             steps {
                 script {
@@ -30,9 +30,7 @@ pipeline {
                 }
             }
         }
-    }
 
-    stages {
         stage('Update Manifests for donggu-1') {
             steps {
                 script { 
@@ -57,9 +55,7 @@ pipeline {
                 }
             }
         }
-    }
 
-    stages {
         stage('Update Manifests for test') {
             steps {
                 script { 
