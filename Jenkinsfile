@@ -21,7 +21,7 @@ pipeline {
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
-                    git credentialsId: 'DOLONG9', url: https://github.com/Donggu-private-project-1/deploy-argocd.git, branch: main
+                    git credentialsId: 'DOLONG9', url: manifestsRepoUrl, branch: manifestsRepoBranch
                     
                     // Update test-nginx/web/test-nginx.yaml
                     def manifestFile = 'test-nginx/web/test-nginx.yaml'
