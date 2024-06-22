@@ -32,7 +32,7 @@ pipeline {
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
                         git add test-nginx/web/test-nginx.yaml
-                        git config user.name "DOLONG9"
+                        git config user.name 'DOLONG9'
                         git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
                     """
