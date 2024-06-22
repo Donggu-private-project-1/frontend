@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
-                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile1 .")
+                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 .")
                         customImage.push()
                     }
                 }
@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
-                        def customImage = docker.build("donggu-private-project-1/test:${env.BUILD_NUMBER}", "-f Dockerfile2 .")
+                        def customImage = docker.build("donggu-private-project-1/test:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile2 .")
                         customImage.push()
                     }
                 }
