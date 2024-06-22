@@ -16,17 +16,27 @@ pipeline {
         stage('Update Manifests') {
             steps {
                 script { 
-                    git credentialsId: 'DOLONG9', url: 'git@github.com:Donggu-private-project-1/deploy-argocd.git'
+                    // Git repository information for manifests
+                    def manifestsRepoUrl = 'git@github.com:Donggu-private-project-1/deploy-argocd.git'
+                    def manifestsRepoBranch = 'main'
+                    
+                    // Checkout manifests repository
+                    git credentialsId: 'DOLONG9', url: https://github.com/Donggu-private-project-1/deploy-argocd.git, branch: main
                     
                     // Update test-nginx/web/test-nginx.yaml
                     sh "sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml"
                     
-                    sh """
-                        git config user.name "DOLONG9"
-                        git add test-nginx/web/test-nginx.yaml
-                        git commit -m 'Update image tag to ${env.BUILD_NUMBER}'
-                        git push --set-upstream origin main
-                    """
+                    // Update test-nginx/web/test-nginx.yaml
+                    def manifestFile = 'test-nginx/web/test-nginx.yaml'
+                    def manifestContent = readFile(manifestFile)
+                    def newImageTag = "harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}"
+                    def updatedContent = manifestContent.replaceAll("harbor.dorong9.com/donggu-private-project-1/front-react:.*", newImageTag)
+                    writeFile(file: manifestFile, text: updatedContent)
+                    
+                    // Commit and push changes
+                    git add: manifestFile
+                    git commit(message: "Update image tag to ${env.BUILD_NUMBER}")
+                    git push()
                 }
             }
         }
