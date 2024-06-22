@@ -3,14 +3,15 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY_URL = "${params.harbor_url}"
+        HARBOR_CREDENTAIL = "${params.harbor_credential}"
     }
 
     stages {
         stage('Build Image') {
             steps {
                 script {
-                    docker.withRegistry("${DOCKER_REGISTRY_URL}", 'harbbor_robot') {
-                        def customImage = docker.build("192.168.20.110:8081/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
+                    docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
+                        def customImage = docker.build("${DOCKER_REGISTRY_URL}/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
                         customImage.push()
                     }
                 }
