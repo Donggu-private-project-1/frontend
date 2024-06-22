@@ -30,11 +30,11 @@ pipeline {
                     git credentialsId: "${HARBOR_CREDENTAIL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
                     sh """
                         git pull origin main
-                        sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
-                        git add test-nginx/web/test-nginx.yaml
+                        sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' donggu-1-nginx/web/donggu-1-nginx.yaml
+                        git add donggu-1-nginx/web/donggu-1-nginx.yaml
                         git config user.name 'DOLONG9'
                         git config user.email "${GIT_USER_EMAIL}"
-                        git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
+                        git commit -m 'donggu-1-nginx/web/donggu-1-nginx.yaml ${currentBuild.number} image versioning'
                     """
                     withCredentials([gitUsernamePassword(credentialsId: 'DOLONG9')]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
