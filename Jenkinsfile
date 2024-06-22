@@ -9,7 +9,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    docker.withRegistry('harbor_url', 'harbbor_robot') {
+                    docker.withRegistry('${DOCKER_REGISTRY_URL}', 'harbbor_robot') {
                         def customImage = docker.build("192.168.20.110:8081/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
                         customImage.push()
                     }
