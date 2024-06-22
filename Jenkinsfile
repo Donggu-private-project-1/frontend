@@ -35,10 +35,11 @@ pipeline {
                         git add test-nginx/web/test-nginx.yaml
                         git config user.name "${GIT_USER_NAME}"
                         git config user.email "${GIT_USER_EMAIL}"
-                        git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
+                        git commit -m 'test-nginx/web/test-nginx.yaml image versioning'
+                    
+                        git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git"
+                        git push origin main
                     """
-                    sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
-                    sh "git push origin main"
                     }
                 }
             }
