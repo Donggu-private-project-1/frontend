@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY_URL = params.harbor_url
-        HARBOR_CREDENTAIL = params.harbor_credential
-        GIT_USER_EMAIL = git_user_email
+        DOCKER_REGISTRY_URL = "${params.harbor_url}"
+        HARBOR_CREDENTAIL = "${params.harbor_credential}"
+        GIT_USER_EMAIL = "${git_user_email}"
     }
 
     stages {
