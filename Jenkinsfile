@@ -24,9 +24,6 @@ pipeline {
                     git credentialsId: 'DOLONG9', url: https://github.com/Donggu-private-project-1/deploy-argocd.git, branch: main
                     
                     // Update test-nginx/web/test-nginx.yaml
-                    sh "sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml"
-                    
-                    // Update test-nginx/web/test-nginx.yaml
                     def manifestFile = 'test-nginx/web/test-nginx.yaml'
                     def manifestContent = readFile(manifestFile)
                     def newImageTag = "harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}"
