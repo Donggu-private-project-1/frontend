@@ -23,17 +23,6 @@ pipeline {
                     // Checkout manifests repository
                     git credentialsId: 'DOLONG9', url: manifestsRepoUrl, branch: manifestsRepoBranch
                     
-                    // Update test-nginx/web/test-nginx.yaml
-                    def manifestFile = 'test-nginx/web/test-nginx.yaml'
-                    def manifestContent = readFile(manifestFile)
-                    def newImageTag = "harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}"
-                    def updatedContent = manifestContent.replaceAll("harbor.dorong9.com/donggu-private-project-1/front-react:.*", newImageTag)
-                    writeFile(file: manifestFile, text: updatedContent)
-                    
-                    // Commit and push changes
-                    git add: manifestFile
-                    git commit(message: "Update image tag to ${env.BUILD_NUMBER}")
-                    git push()
                 }
             }
         }
