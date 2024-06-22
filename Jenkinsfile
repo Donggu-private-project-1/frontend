@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script { 
                     // Git repository information for manifests
-                    def manifestsRepoUrl = 'git@github.com:Donggu-private-project-1/deploy-argocd.git'
+                    def manifestsRepoUrl = 'https://github.com/Donggu-private-project-1/deploy-argocd.git'
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
