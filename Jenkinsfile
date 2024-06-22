@@ -36,10 +36,12 @@ pipeline {
                         git config user.name "${GIT_USER_NAME}"
                         git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
-                    
-                        git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git
-                        git push origin main
                     """
+                    withCredentials([usernamePassword(credentialsId: "${HARBOR_CREDENTAIL}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                       sh """
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Donggu-private-project-1/deploy-argocd.git
+                            git push origin main
+                       """
                     }
                 }
             }
