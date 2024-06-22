@@ -25,6 +25,8 @@ pipeline {
                     sh """
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
+                        git config user.name 'DOLONG9'
+                        git config user.email 'bagmy2@gmail.com'
                         git commit -m 'kite_sendmanager ${currentBuild.number} image versioning'
                     """
                     withCredentials([gitUsernamePassword(credentialsId: 'github')]) {
