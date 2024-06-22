@@ -26,7 +26,7 @@ pipeline {
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
-                    git credentialsId: 'DOLONG9', url: manifestsRepoUrl, branch: manifestsRepoBranch
+                    git credentialsId: "${HARBOR_CREDENTAIL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
                     sh """
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
