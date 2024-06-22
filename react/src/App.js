@@ -10,7 +10,7 @@ function App() {
   const [hello, setHello] = useState('');
 
   useEffect(() => {
-      axios.get('http://172.30.1.98:8080/test')
+      axios.get('http://donggu-1-tomcat/')
           .then(response => setHello(response.data))
           .catch(error => console.log(error));
   }, []);
