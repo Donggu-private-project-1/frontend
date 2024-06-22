@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_REGISTRY_URL = "${params.harbor_url}"
+    }
+
     stages {
         stage('Build Image') {
             steps {
