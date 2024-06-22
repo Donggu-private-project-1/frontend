@@ -30,7 +30,8 @@ pipeline {
                     withCredentials([gitUsernamePassword(credentialsId: 'github')]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
                        sh "git push origin main"
-                 }
+                    }
+                }
             }
         }
     }
