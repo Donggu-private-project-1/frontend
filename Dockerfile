@@ -3,7 +3,7 @@
 # Node.js 14 버전을 사용하여 빌드 환경을 설정
 FROM node:14 as build  
 
-# 작업 디렉토리를 /app으로 설정
+# 작업 디렉토리를 /app으로 설정 
 WORKDIR /app
 
 # ./react/package.json, ./react/package-lock.json 파일을 현재 작업 디렉토리 (/app)로 복사! package.json 및 package-lock.json 파일을 기반으로 프로젝트의 모든 종속성을 설치
