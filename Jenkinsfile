@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY_URL = "${params.harbor_url}"
         HARBOR_CREDENTAIL = "${params.harbor_credential}"
         GIT_USER_EMAIL = "${git_user_email}"
+        OLONG9_CREDENTIAL = "${params.github_credential}"
     }
 
     stages {
@@ -48,7 +49,7 @@ pipeline {
                         git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'donggu-1/web/donggu-1-nginx.yaml ${currentBuild.number} image versioning'
                     """
-                    withCredentials([gitUsernamePassword(credentialsId: 'DOLONG9')]) {
+                    withCredentials([gitUsernamePassword(credentialsId: "${DOLONG9_CREDENTIAL}")]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
                        sh "git push origin main"
                     }
