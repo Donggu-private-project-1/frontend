@@ -16,7 +16,7 @@ pipeline {
         stage('Update Manifests') {
             steps {
                 script { 
-                    git credentialsId: 'test', url: 'git@github.com:Donggu-private-project-1/deploy-argocd.git'
+                    git credentialsId: 'DOLONG9', url: 'git@github.com:Donggu-private-project-1/deploy-argocd.git'
                     
                     // Update test-nginx/web/test-nginx.yaml
                     sh "sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml"
