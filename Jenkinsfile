@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_REGISTRY_URL = "${params.harbor_url}"
         HARBOR_CREDENTAIL = "${params.harbor_credential}"
+        GIT_USER_NAME = "${params.git_user_name}"
+        GIT_USER_EMAIL = "${git_user_email}"
     }
 
     stages {
@@ -31,8 +33,8 @@ pipeline {
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
                         git add test-nginx/web/test-nginx.yaml
-                        git config user.name 'DOLONG9'
-                        git config user.email 'bagmy2@gmail.com'
+                        git config user.name "${GIT_USER_NAME}"
+                        git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
                     """
                     withCredentials([gitUsernamePassword(credentialsId: 'DOLONG9')]) {
