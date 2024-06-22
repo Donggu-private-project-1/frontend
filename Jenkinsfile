@@ -30,7 +30,7 @@ pipeline {
                         git config user.email 'bagmy2@gmail.com'
                         git commit -m 'kite_sendmanager ${currentBuild.number} image versioning'
                     """
-                    withCredentials([gitUsernamePassword(credentialsId: 'github')]) {
+                    withCredentials([gitUsernamePassword(credentialsId: 'DOLONG9')]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
                        sh "git push origin main"
                     }
