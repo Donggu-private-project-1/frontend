@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
-                        def customImage = docker.build("192.168.20.110:8081/donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
+                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}")
                         customImage.push()
                     }
                 }
