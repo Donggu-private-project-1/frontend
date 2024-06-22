@@ -74,7 +74,7 @@ pipeline {
                         git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'test/web/test-nginx.yaml ${currentBuild.number} image versioning'
                     """
-                    withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIAL}" {
+                    withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIAL}")]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
                        sh "git push origin main"
                     }
