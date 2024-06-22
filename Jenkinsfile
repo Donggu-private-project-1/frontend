@@ -21,16 +21,16 @@ pipeline {
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
-                    git credentialsId: '${{ secrets.FOR_JENKINS }}', url: manifestsRepoUrl, branch: manifestsRepoBranch
+                    git credentialsId: 'FOR_JENKINS', url: manifestsRepoUrl, branch: manifestsRepoBranch
                     sh """
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
                         git add test-nginx/web/test-nginx.yaml
-                        git config user.name '${{ secrets.FOR_JENKINS }}'
+                        git config user.name 'FOR_JENKINS'
                         git config user.email 'bagmy2@gmail.com'
                         git commit -m 'kite_sendmanager ${currentBuild.number} image versioning'
                     """
-                    withCredentials([gitUsernamePassword(credentialsId: '${{ secrets.FOR_JENKINS }}')]) {
+                    withCredentials([gitUsernamePassword(credentialsId: 'FOR_JENKINS')]) {
                        sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
                        sh "git push origin main"
                     }
