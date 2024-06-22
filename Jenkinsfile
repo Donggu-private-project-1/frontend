@@ -2,10 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY_URL = "${params.harbor_url}"
-        HARBOR_CREDENTAIL = "${params.harbor_credential}"
-        GIT_USER_NAME = "${params.git_user_name}"
-        GIT_USER_EMAIL = "${git_user_email}"
+        DOCKER_REGISTRY_URL = params.harbor_url
+        HARBOR_CREDENTAIL = params.harbor_credential
+        GIT_USER_EMAIL = git_user_email
     }
 
     stages {
@@ -33,15 +32,13 @@ pipeline {
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' test-nginx/web/test-nginx.yaml
                         git add test-nginx/web/test-nginx.yaml
-                        git config user.name "${GIT_USER_NAME}"
+                        git config user.name "DOLONG9"
                         git config user.email "${GIT_USER_EMAIL}"
                         git commit -m 'test-nginx/web/test-nginx.yaml ${currentBuild.number} image versioning'
                     """
-                    withCredentials([usernamePassword(credentialsId: "${HARBOR_CREDENTAIL}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                       sh """
-                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Donggu-private-project-1/deploy-argocd.git
-                            git push origin main
-                       """
+                    withCredentials([gitUsernamePassword(credentialsId: 'DOLONG9')]) {
+                       sh "git remote set-url origin https://github.com/Donggu-private-project-1/deploy-argocd.git" 
+                       sh "git push origin main"
                     }
                 }
             }
