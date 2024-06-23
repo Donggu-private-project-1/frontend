@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     axios.get('/api/data')
       .then(response => {
-        setData(response.data);
+        setHello(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the data!', error);
