@@ -10,7 +10,7 @@ function App() {
   const [hello, setHello] = useState('');
 
   useEffect(() => {
-    axios.get('/api/data')
+    axios.get('https://58.233.5.230/api')
       .then(response => {
         setHello(response.data);
       })
