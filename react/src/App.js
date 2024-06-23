@@ -10,7 +10,7 @@ function App() {
   const [hello, setHello] = useState('');
 
   useEffect(() => {
-    axios.get('https://www.dorong9.com/')
+    axios.get('https://www.dorong9.com/api/')
       .then(response => {
         setHello(response.data);
       })
