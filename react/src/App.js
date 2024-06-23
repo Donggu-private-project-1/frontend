@@ -10,9 +10,13 @@ function App() {
   const [hello, setHello] = useState('');
 
   useEffect(() => {
-      axios.get('http://donggu-1-tomcat/')
-          .then(response => setHello(response.data))
-          .catch(error => console.log(error));
+    axios.get('/api/data')
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
   }, []);
 
   return (
