@@ -16,7 +16,6 @@ RUN npm run build
 
 
 
-
 # 2단계: 실행 단계
 
 # Nginx의 경량 버전인 Alpine 이미지를 사용
