@@ -13,22 +13,12 @@ pipeline {
     }
 
     stages {
-        stage('react 폴더로 접근') {
-            steps {
-                script {
-                    // Ensure /react directory exists
-                    dir("/var/jenkins_home/workspace/donggu-private-project-1-frontend/react") {
-                        // Move contents of /react directory to current workspace
-                        sh 'mv README.md package-lock.json package.json public src ${WORKSPACE}'
-                    }
-                }
-            }
-        }
+
 
         stage('Install Dependencies') {
             steps {
-                dir('/react') { // 프로젝트 루트 디렉토리가 아니라면 이 경로를 수정해야 합니다.
-                    // npm 의존성 설치
+                dir("${env.WORKSPACE}/react") {
+                    sh 'mv README.md package-lock.json package.json public src ..'
                     sh 'npm install'
                 }
             }
@@ -36,8 +26,7 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                // 프로젝트 빌드
-                dir('/react') {
+                dir("${env.WORKSPACE}") {
                     sh 'npm run build'
                 }
             }
