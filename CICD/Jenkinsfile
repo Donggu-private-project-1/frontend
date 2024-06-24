@@ -17,30 +17,27 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir("${env.WORKSPACE}/react") {
-                    sh 'mv README.md package-lock.json package.json public src ..'
-                    sh 'npm install'
-                }
+                // npm 의존성 설치
+                sh 'npm install'                
             }
         }
 
         stage('Build Project') {
             steps {
-                dir("${env.WORKSPACE}") {
-                    sh 'npm run build'
-                }
+                // 프로젝트 빌드
+                sh 'npm run build'
             }
         }
 
         stage('Build Image for donggu-1') {
             steps {
                 script {
-                    // Copy built artifacts to a temporary directory for Docker build
+                    // build 된 결과물을 ./docker_build로 복사
                     sh "mkdir -p docker_build"
-                    sh "cp -r react/build ./docker_build"  // Replace 'dist' with your actual build directory
+                    sh "cp -r $WORKSPACE/dist ./docker_build"  
 
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
-                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 ./react/docker_build")
+                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f CICD/Dockerfile/Dockerfile1 ./docker_build")
                         customImage.push()
                     }
                 }
@@ -52,7 +49,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
-                        def customImage = docker.build("donggu-private-project-1/test:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile2 .")
+                        def customImage = docker.build("donggu-private-project-1/test:${env.BUILD_NUMBER}", "-f CICD/Dockerfile/Dockerfile2 .")
                         customImage.push()
                     }
                 }

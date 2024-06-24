@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Jenkins에서 빌드된 결과물을 복사하여 Nginx 기본 HTML 디렉토리로 설정
-COPY ./docker_build /usr/share/nginx/html
+COPY ./dist /usr/share/nginx/html
 
 EXPOSE 80
 
