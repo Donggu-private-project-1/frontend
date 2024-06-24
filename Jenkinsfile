@@ -19,8 +19,9 @@ pipeline {
                 dir('/react') {
                     sh 'npm run build'
                 }
+            }
         }
-
+        
         stage('Build Project') {
             steps {
                 // 프로젝트 빌드
