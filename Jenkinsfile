@@ -8,12 +8,34 @@ pipeline {
         GIT_CREDENTIAL = "${params.github_credential}"
     }
 
+    tools {
+        nodejs 'NodeJS-21.4.0' // Jenkins에서 구성한 Node.js 도구 이름 사용
+    }
+
     stages {
+        stage('Install Dependencies') {
+            steps {
+                // npm 의존성 설치
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                // 프로젝트 빌드
+                sh 'npm run build'
+            }
+        }
+
         stage('Build Image for donggu-1') {
             steps {
                 script {
+                    // Copy built artifacts to a temporary directory for Docker build
+                    sh "mkdir -p docker_build"
+                    sh "cp -r $WORKSPACE/dist ./docker_build"  // Replace 'dist' with your actual build directory
+
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
-                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 .")
+                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 ./docker_build")
                         customImage.push()
                     }
                 }
