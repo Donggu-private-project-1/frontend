@@ -26,6 +26,14 @@ pipeline {
             steps {
                 // 프로젝트 빌드
                 sh 'npm run build'
+
+                // 빌드된 결과물 확인
+                script {
+                    def distDir = "$WORKSPACE/dist"
+                    if (!fileExists(distDir)) {
+                        error "Build failed: $distDir directory not found or empty"
+                    }
+                }                
             }
         }
 
