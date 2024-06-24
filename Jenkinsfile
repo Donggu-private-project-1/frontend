@@ -16,8 +16,11 @@ pipeline {
         stage('react 폴더로 접근') {
             steps {
                 script {
-                    // Move contents of /react directory to current workspace
-                    sh 'mv /var/jenkins_home/workspace/donggu-private-project-1-frontend/react/* .'
+                    // Ensure /react directory exists
+                    dir("/var/jenkins_home/workspace/donggu-private-project-1-frontend/react") {
+                        // Move contents of /react directory to current workspace
+                        sh 'mv README.md package-lock.json package.json public src ${WORKSPACE}'
+                    }
                 }
             }
         }
