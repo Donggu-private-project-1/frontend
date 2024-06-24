@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY_URL = "${params.harbor_url}"
-        HARBOR_CREDENTAIL = "${params.harbor_credential}"
+        HARBOR_CREDENTIAL = "${params.harbor_credential}"
         GIT_USER_EMAIL = "${params.git_user_email}"
         GIT_CREDENTIAL = "${params.github_credential}"
     }
@@ -13,6 +13,15 @@ pipeline {
     }
 
     stages {
+        stage('react 폴더로 접근') {
+            steps {
+                script {
+                    // Move contents of /react directory to current workspace
+                    sh 'mv /var/jenkins_home/workspace/donggu-private-project-1-frontend/react/* .'
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 dir('/react') { // 프로젝트 루트 디렉토리가 아니라면 이 경로를 수정해야 합니다.
@@ -38,7 +47,7 @@ pipeline {
                     sh "mkdir -p docker_build"
                     sh "cp -r $WORKSPACE/dist ./docker_build"  // Replace 'dist' with your actual build directory
 
-                    docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
+                    docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
                         def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 ./docker_build")
                         customImage.push()
                     }
@@ -50,7 +59,7 @@ pipeline {
         stage('Build Image for test') {
             steps {
                 script {
-                    docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTAIL}") {
+                    docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
                         def customImage = docker.build("donggu-private-project-1/test:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile2 .")
                         customImage.push()
                     }
@@ -66,7 +75,7 @@ pipeline {
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
-                    git credentialsId: "${HARBOR_CREDENTAIL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
+                    git credentialsId: "${HARBOR_CREDENTIAL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
                     sh """
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/front-react:.*|harbor.dorong9.com/donggu-private-project-1/front-react:${env.BUILD_NUMBER}|' donggu-1/web/donggu-1-nginx.yaml
@@ -91,7 +100,7 @@ pipeline {
                     def manifestsRepoBranch = 'main'
                     
                     // Checkout manifests repository
-                    git credentialsId: "${HARBOR_CREDENTAIL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
+                    git credentialsId: "${HARBOR_CREDENTIAL}", url: manifestsRepoUrl, branch: manifestsRepoBranch
                     sh """
                         git pull origin main
                         sed -i 's|harbor.dorong9.com/donggu-private-project-1/test:.*|harbor.dorong9.com/donggu-private-project-1/test:${env.BUILD_NUMBER}|' test/web/test-nginx.yaml
