@@ -15,8 +15,10 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                // npm 의존성 설치
-                sh 'npm install'
+                dir('/react') { // 프로젝트 루트 디렉토리가 아니라면 이 경로를 수정해야 합니다.
+                    // npm 의존성 설치
+                    sh 'npm install'
+                }
             }
         }
 
