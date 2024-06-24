@@ -25,6 +25,7 @@ pipeline {
                 // 프로젝트 빌드
                 dir('/react') {
                     sh 'npm run build'
+                }
             }
         }
 
