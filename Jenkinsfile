@@ -15,9 +15,10 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                // npm 의존성 설치
-                sh 'npm install'
-            }
+                // 프로젝트 빌드
+                dir('/react') {
+                    sh 'npm run build'
+                }
         }
 
         stage('Build Project') {
@@ -102,6 +103,13 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            deleteDir()
         }
     }
 }
