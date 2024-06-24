@@ -26,15 +26,7 @@ pipeline {
             steps {
                 // 프로젝트 빌드
                 sh 'npm run build'
-
-                // 빌드된 결과물 확인
-                script {
-                    def distDir = "$WORKSPACE/dist"
-                    if (!fileExists(distDir)) {
-                        error "Build failed: $distDir directory not found or empty"
-                    }
-                }                
-            }
+            }                
         }
 
         stage('Build Image for donggu-1') {
@@ -42,7 +34,7 @@ pipeline {
                 script {
                     // build 된 결과물을 ./docker_build로 복사
                     sh "mkdir -p docker_build"
-                    sh "cp -r $WORKSPACE/dist ./docker_build"  
+                    sh "cp -r $WORKSPACE/build ./docker_build"  
 
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
                         def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f CICD/Dockerfile/Dockerfile1 ./docker_build")
