@@ -15,17 +15,16 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                // 프로젝트 빌드
-                dir('/react') {
-                    sh 'npm run build'
-                }
+                // npm 의존성 설치
+                sh 'npm install'
             }
         }
-        
+
         stage('Build Project') {
             steps {
                 // 프로젝트 빌드
-                sh 'npm run build'
+                dir('/react') {
+                    sh 'npm run build'
             }
         }
 
