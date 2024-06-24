@@ -40,7 +40,7 @@ pipeline {
                     sh "cp -r $WORKSPACE/react/dist ./docker_build"  // Replace 'dist' with your actual build directory
 
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
-                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 ./docker_build")
+                        def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f Dockerfile/Dockerfile1 ./react/docker_build")
                         customImage.push()
                     }
                 }
