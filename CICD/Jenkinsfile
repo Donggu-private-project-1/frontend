@@ -35,6 +35,10 @@ pipeline {
                     sh "mkdir -p docker_build"
                     sh "cp -r $WORKSPACE/build ./docker_build"  
 
+                    // nginx.conf 파일 복사
+                    sh "cp CICD/nginx/nginx.conf ./"
+
+
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
                         def customImage = docker.build("donggu-private-project-1/front-react:${env.BUILD_NUMBER}", "-f CICD/Dockerfile/Dockerfile1 ./docker_build")
                         customImage.push()
