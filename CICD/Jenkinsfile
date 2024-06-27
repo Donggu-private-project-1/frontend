@@ -36,7 +36,7 @@ pipeline {
                     sh "cp -r $WORKSPACE/build ./docker_build"  
 
                     // nginx.conf 파일 복사
-                    sh "cp CICD/nginx/nginx.conf ./"
+                    sh "cp CICD/nginx/nginx.conf ./docker_build/nginx.conf"
 
 
                     docker.withRegistry("http://${DOCKER_REGISTRY_URL}", "${HARBOR_CREDENTIAL}") {
