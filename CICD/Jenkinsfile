@@ -23,6 +23,7 @@ pipeline {
                     sh 'npm audit fix --force'
                     // 재설치
                     sh 'npm install'
+                }
             }
         }
 
