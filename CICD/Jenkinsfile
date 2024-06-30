@@ -16,8 +16,9 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // npm 의존성 설치
-                sh 'npm install'                
+                // npm 의존성 설치 및 취약점 해결
+                sh 'npm install'  
+                sh 'npm audit fix'
             }
         }
 
