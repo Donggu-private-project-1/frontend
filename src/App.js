@@ -24,7 +24,7 @@ function App() {
           <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />  {/* 로고 이미지 표시 */}
               <p>
-                  From backend canary: {hello}
+                  From backend 21:05 : {hello}
               </p>
           </header>
       </div>
