@@ -24,7 +24,7 @@ function App() {
           <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />  {/* 로고 이미지 표시 */}
               <p>
-                  From backend: {hello}
+                  From backendv2: {hello}
               </p>
           </header>
       </div>
