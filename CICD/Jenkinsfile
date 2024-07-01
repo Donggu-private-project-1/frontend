@@ -16,8 +16,26 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // npm 의존성 설치
-                sh 'npm install'                
+                script {
+                    // Jenkins의 캐시 디렉토리 지정
+                    def npmCacheDir = "${JENKINS_HOME}/npm-cache"
+
+                    // 캐시 디렉토리가 없으면 생성
+                    sh "mkdir -p ${npmCacheDir}"
+
+                    // npm 캐시 설정 및 ci 실행
+                    sh """
+                        npm config set cache "${npmCacheDir}"
+                    
+                        if [ ! -f package-lock.json ]; then
+                            echo "package-lock.json not found. Running npm install to generate it."
+                            npm install --prefer-offline --no-audit --maxsockets 50
+                        else
+                            echo "package-lock.json found. Running npm ci."
+                            npm ci --prefer-offline --no-audit --maxsockets 50    
+                        fi
+                    """
+                }             
             }
         }
 
@@ -113,7 +131,30 @@ pipeline {
     post {
         always {
             echo 'Cleaning up workspace...'
-            deleteDir()
+            script {
+                sh '''
+                    # 빌드 결과물 및 임시 파일 삭제
+                    rm -rf dist docker_build
+                    find . -name "*.log" -type f -delete
+                    find . -name "*.tmp" -type f -delete
+
+                    # Docker 이미지 정리
+                    docker rmi donggu-private-project-1/front-react:${BUILD_NUMBER} || true
+                    docker rmi ${DOCKER_REGISTRY_URL}/donggu-private-project-1/front-react:${BUILD_NUMBER} || true
+
+                    docker rmi donggu-private-project-1/test:${BUILD_NUMBER} || true
+                    docker rmi ${DOCKER_REGISTRY_URL}/donggu-private-project-1/test:${BUILD_NUMBER} || true
+                    docker system prune -f
+                '''
+            }
+            // Jenkins의 기본 정리 기능 사용
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: 'node_modules', type: 'EXCLUDE'],
+                               [pattern: 'package.json', type: 'EXCLUDE'],
+                               [pattern: 'package-lock.json', type: 'EXCLUDE']])
         }
     }
 }
